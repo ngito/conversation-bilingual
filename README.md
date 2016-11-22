@@ -6,7 +6,10 @@ This Node.js app demonstrates the Conversation service combined with Google Tran
 
 You can view a [demo][demo_url] of this app.
 
-    ![Screen capture of Services list](readme_images/conversation_service.png)
+1. Below is sequence diagram on how this code works 
+
+    ![Screen capture of workspace tile menu](readme_images/sequence-diagram.png)
+
 
 ## Before you begin
 
