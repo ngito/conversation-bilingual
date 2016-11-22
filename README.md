@@ -2,9 +2,11 @@
 [![Build Status](https://travis-ci.org/watson-developer-cloud/conversation-simple.svg?branch=master)](http://travis-ci.org/watson-developer-cloud/conversation-simple)
 [![codecov.io](https://codecov.io/github/watson-developer-cloud/conversation-simple/coverage.svg?branch=master)](https://codecov.io/github/watson-developer-cloud/conversation-simple?branch=master)
 
-This Node.js app demonstrates the Conversation service in a simple chat interface simulating a cognitive car dashboard.
+This Node.js app demonstrates the Conversation service combined with Google Translate API to allow input non english language in a simple chat interface simulating a cognitive car dashboard.
 
 You can view a [demo][demo_url] of this app.
+
+    ![Screen capture of Services list](readme_images/conversation_service.png)
 
 ## Before you begin
 
@@ -182,6 +184,20 @@ You can use Cloud Foundry to deploy your local version of the app to Bluemix.
 
     Access your app on Bluemix at the URL specified in the command output.
 
+## Enroll Google Cloud Platform
+Apply Google Cloud Platform
+- htps://cloud.google.com/
+Enable Google Translate API
+- htps://cloud.google.com/translate/docs/getting-started
+
+## Modify .env
+Please replace this parameter with Google Translate API Key
+Set LANGUAGE_FROM to language as an input, most likely this is non english language
+
+TRANSLATE_API_KEY=...
+LANGUAGE_FROM=id
+LANGUAGE_TO=en
+
 ## Troubleshooting
 
 If you encounter a problem, you can check the logs for more information. To see the logs, run the `cf logs` command:
@@ -207,7 +223,7 @@ cf logs <application-name> --recent
 
 [cf_docs]: (https://www.ibm.com/watson/developercloud/doc/getting_started/gs-cf.shtml)
 [cloud_foundry]: https://github.com/cloudfoundry/cli#downloads
-[demo_url]: http://conversation-simple.mybluemix.net/
+[demo_url]: http://indowatson.mybluemix.net/
 [doc_intents]: (http://www.ibm.com/watson/developercloud/doc/conversation/intent_ovw.shtml)
 [docs]: http://www.ibm.com/watson/developercloud/doc/conversation/overview.shtml
 [docs_landing]: (http://www.ibm.com/watson/developercloud/doc/conversation/index.shtml)
