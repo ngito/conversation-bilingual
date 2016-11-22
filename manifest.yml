@@ -1,0 +1,19 @@
+---
+declared-services:
+  indowatson-conversation:
+    label: conversation
+    plan: free
+  indowatson-cloudant:
+    label: cloudant
+    plan: free
+applications:
+- name: indowatson
+  command: npm start
+  path: .
+  memory: 256M
+  instances: 1
+  services:
+  - indowatson-conversation
+  - indowatson-cloudant
+  env:
+    NPM_CONFIG_PRODUCTION: false
