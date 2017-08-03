@@ -62,6 +62,132 @@ var conversation = new Watson( {
   version: 'v1'
 } );
 
+function isEmpty(obj) {
+  return !Object.keys(obj).length > 0;
+}
+
+function randomInt (low, high) {
+    return Math.floor(Math.random() * (high - low) + low);
+}
+
+// Reset context, when dialog node == 'conversation_restart'
+function resetContext(data) {
+console.log("\tresetContext");
+    var reset_context = false;
+    try {
+        var nodes_visited = data.output.nodes_visited;
+        if (nodes_visited.length > 0) {
+            for (var i = 0; i < nodes_visited.length; i++) {
+                if (nodes_visited[i] == 'conversation_restart') {
+                    reset_context = true;
+                    break;
+                }
+            }
+        }
+    }
+    catch (err) {
+        console.log("\tException: " + err);
+    }
+
+    if (reset_context) {
+        var id = data.context.conversation_id;
+        data.context = {
+            'conversation_id': '',
+            'system': {
+              'dialog_stack': [
+                {
+                  'dialog_node': 'root'
+                }
+              ],
+              'dialog_turn_counter': 1,
+              'dialog_request_counter': 1,
+              'branch_exited': true,
+              'branch_exited_reason': 'completed'
+            }
+        };
+        data.context.conversation_id = id;
+    }
+}
+
+function processConfirmation(data) {
+console.log("\tprocessConfirmation");
+console.log("\t\tintents: " + data.intents[0].intent);
+console.log("\t\tproduct: " + data.context.product);
+
+    if (data.intents.length > 0 && data.intents[0].intent == 'confirm_yes') {
+        if (data.context.product != "") {
+            var msg = "Your new " + data.context.product + " account number is " + randomInt(10000000, 19999999);
+            data.output.text = msg + '\n' + data.output.text;
+        }
+    }
+}
+
+function processBalance(data) {
+console.log("\tprocessBalance");
+    if (Array.isArray(data.output.text)) {
+        for (var i = 0; i < data.output.text.length; i++) {
+            data.output.text[i] = data.output.text[i].replace("{BALANCE}", randomInt(1000000, 5000000));
+        }
+    }
+    else
+        data.output.text = data.output.text.replace("{BALANCE}", + randomInt(1000000, 5000000));
+}
+
+function processBranch(data) {
+console.log("\tprocessBranch");
+    if (data.intents.length > 0 && data.intents[0].intent != 'location_branch')
+        return;
+    else
+        data.context.location_branch = true;
+
+    var location = '';
+    var location = '';
+    if (data.entities.length > 0 && data.entities[0].entity == 'sys-location')
+        location = data.entities[0].value;
+
+    if (data.entities.length > 0 && data.entities[0].entity == 'sys-location')
+        location = data.entities[0].value;
+
+console.log("\t\tintents:  " + data.intents[0].intent);
+console.log("\t\tlocation: " + location);
+
+    var env = JSON.parse(process.env.VCAP_SERVICES);
+    var db2 = env['dashDB'][0].credentials;
+    
+    var conString = "DRIVER={DB2};DATABASE=" + db2.db + ";UID=" + db2.username + ";PWD=" + db2.password + ";HOSTNAME=" + db2.hostname + ";port=" + db2.port;
+
+    var result = '';
+    var ibmdb = require('ibm_db');
+    try {
+        var con = ibmdb.openSync(conString);
+        var sql = "SELECT * FROM BRANCH WHERE UPPER(CITY) LIKE '" + location.toUpperCase() + "%' OR ADDRESS LIKE '%" + location.toUpperCase() + "' FETCH FIRST 10 ROWS ONLY";
+        console.log("\t\tsql = " + sql);
+
+        var rows = con.querySync(sql);
+        for (var i = 0; i < rows.length; i++) {
+            result += i+1 + '. ' + rows[i].ADDRESS + ' Phone: ' + rows[i].PHONE + '\n';
+        }
+        console.log(result);
+        data.output.text = result;
+        con.close(function() {
+            console.log("Connection closed successfully");
+        });
+    }
+    catch (err) {
+        console.log("Error", err);
+    }
+}
+
+function processOutput(data, callback) {
+    processConfirmation(data),
+    processBalance(data),
+    processBranch(data),
+    resetContext(data)
+
+    callback(false, data);
+    console.log('Done!');
+}
+
 // Endpoint to be call from the client side
 app.post( '/api/message', function(req, res) {
   var workspace = process.env.WORKSPACE_ID || '<workspace-id>';
@@ -90,12 +216,14 @@ app.post( '/api/message', function(req, res) {
     }
   }
 
+console.log("+++ translate input");
   if ( payload.input.text ) {
     // Google Translate Conversation Request
     googleTranslate.translate(payload.input.text, languageTo, function(err, translation) {
       if (err) 
         return res.status( err.code || 500 ).json( err );
     
+      var originalInputText = payload.input.text;
       payload.input.text = translation.translatedText;
       
       // Send the input to the conversation service
@@ -104,14 +232,29 @@ app.post( '/api/message', function(req, res) {
           return res.status( err.code || 500 ).json( err );
         }
 
-        // Google Translate Conversation Response
-        googleTranslate.translate(data.output.text, languageFrom, function(err, translation) {
-          if ( err ) {
-            return res.status( err.code || 500 ).json( err );
-          }
-          data.output.text = translation.translatedText;
+        // Handle Watson Conversation Output
+console.log("+++ processOutput");
+        processOutput(data, function(err, data) {
 
-          return res.json( updateMessage( payload, data ) );
+            // Google Translate Conversation Response
+            var outputText = '';
+            if (Array.isArray(data.output.text)) {
+                for (var i = 0; i < data.output.text.length; i++)
+                    outputText += data.output.text[i] + '\n';
+            }
+            else
+                outputText = data.output.text;
+
+console.log("+++ translate output");
+            googleTranslate.translate(outputText, languageFrom, function(err, translation) {
+              if ( err ) {
+                return res.status( err.code || 500 ).json( err );
+              }
+              data.output.originalText = data.output.text;
+              data.output.text = translation.translatedText;
+              data.input.originalText = originalInputText;
+              return res.json( updateMessage( payload, data ) );
+            } );
         } );
       } );
     } );

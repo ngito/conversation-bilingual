@@ -117,6 +117,7 @@ var ConversationPanel = (function() {
     var isUser = isUserMessage(typeValue);
     var textExists = (newPayload.input && newPayload.input.text)
       || (newPayload.output && newPayload.output.text);
+    newPayload.output.text = newPayload.output.text.replace('\n', '<br/>');
     if (isUser !== null && textExists) {
       // Create new message DOM element
       var messageDivs = buildMessageDomElements(newPayload, isUser);

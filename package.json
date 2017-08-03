@@ -12,17 +12,20 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "async": "^2.5.0",
     "basic-auth-connect": "1.0.0",
+    "body-parser": "1.15.1",
+    "cloudant": "1.4.1",
     "dotenv": "^2.0.0",
     "express": "4.13.4",
-    "body-parser": "1.15.1",
-    "watson-developer-cloud": "^2.4.6",
-    "cloudant": "1.4.1",
     "express-csv": "0.6.0",
-    "nano" : "*",
+    "google-translate": "^1.0.7",
+    "ibm_db": "^2.0.0",
+    "jade": "^1.11.0",
+    "nano": "*",
     "uuid": "2.0.2",
-    "vcap_services": "^0.2.0"
-    "google-translate": "^1.0.7"
+    "vcap_services": "^0.2.0",
+    "watson-developer-cloud": "^2.4.6"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",

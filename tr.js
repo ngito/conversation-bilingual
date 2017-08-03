@@ -13,7 +13,8 @@ process.stdin.pipe(require('split')()).on('data', processLine)
 
 function processLine (line) {
   googleTranslate.translate(line, languageTo, function(err, translation) {
-    console.log(translation.translatedText);
+//   console.log(translation.translatedText);
+    console.log(translation);
 });
 }
 

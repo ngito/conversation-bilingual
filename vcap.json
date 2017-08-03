@@ -1,0 +1,100 @@
+{
+    "AvailabilityMonitoring": [
+        {
+            "credentials": {
+                "cred_url": "https://perfbroker.ng.bluemix.net",
+                "token": "Qg/kZHwPMq7NAGjTL8d8YMwtixqowY8a6uTcnGXIGt7xALI+qcpEtlYZUFKz/KqyLoj8bCuHqMlEuh1TE+2yZzb9Bn8qn0aKfOpnttgUVb8="
+            },
+            "syslog_drain_url": null,
+            "volume_mounts": [],
+            "label": "AvailabilityMonitoring",
+            "provider": null,
+            "plan": "Lite",
+            "name": "availability-monitoring-auto",
+            "tags": [
+                "ibm_created",
+                "bluemix_extensions",
+                "dev_ops",
+                "lite"
+            ]
+        }
+    ],
+    "dashDB": [
+        {
+            "credentials": {
+                "port": 50000,
+                "db": "BLUDB",
+                "username": "dash11054",
+                "ssljdbcurl": "jdbc:db2://dashdb-entry-yp-dal09-09.services.dal.bluemix.net:50001/BLUDB:sslConnection=true;",
+                "host": "dashdb-entry-yp-dal09-09.services.dal.bluemix.net",
+                "https_url": "https://dashdb-entry-yp-dal09-09.services.dal.bluemix.net:8443",
+                "dsn": "DATABASE=BLUDB;HOSTNAME=dashdb-entry-yp-dal09-09.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=dash11054;PWD=D_D2yg_oJwC2;",
+                "hostname": "dashdb-entry-yp-dal09-09.services.dal.bluemix.net",
+                "jdbcurl": "jdbc:db2://dashdb-entry-yp-dal09-09.services.dal.bluemix.net:50000/BLUDB",
+                "ssldsn": "DATABASE=BLUDB;HOSTNAME=dashdb-entry-yp-dal09-09.services.dal.bluemix.net;PORT=50001;PROTOCOL=TCPIP;UID=dash11054;PWD=D_D2yg_oJwC2;Security=SSL;",
+                "uri": "db2://dash11054:D_D2yg_oJwC2@dashdb-entry-yp-dal09-09.services.dal.bluemix.net:50000/BLUDB",
+                "password": "D_D2yg_oJwC2"
+            },
+            "syslog_drain_url": null,
+            "volume_mounts": [],
+            "label": "dashDB",
+            "provider": null,
+            "plan": "Entry",
+            "name": "indowatson-db",
+            "tags": [
+                "big_data",
+                "ibm_created",
+                "ibm_dedicated_public",
+                "db2",
+                "sqldb",
+                "purescale",
+                "sql",
+                "dashdb"
+            ]
+        }
+    ],
+    "conversation": [
+        {
+            "credentials": {
+                "url": "https://gateway.watsonplatform.net/conversation/api",
+                "password": "lQyOEhLAPFFs",
+                "username": "1cb7e3d3-bdff-448f-906e-f1df1cb76a56"
+            },
+            "syslog_drain_url": null,
+            "volume_mounts": [],
+            "label": "conversation",
+            "provider": null,
+            "plan": "free",
+            "name": "indowatson-conversation",
+            "tags": [
+                "watson",
+                "ibm_created",
+                "ibm_dedicated_public",
+                "lite"
+            ]
+        }
+    ],
+    "cloudantNoSQLDB": [
+        {
+            "credentials": {
+                "username": "4bd295bc-ae8b-441f-b05e-8e7b2c0b4a0b-bluemix",
+                "password": "de4c59cdf32f9a537f72858b1cf404381df9028badf737d10cb2200aeb35e5a5",
+                "host": "4bd295bc-ae8b-441f-b05e-8e7b2c0b4a0b-bluemix.cloudant.com",
+                "port": 443,
+                "url": "https://4bd295bc-ae8b-441f-b05e-8e7b2c0b4a0b-bluemix:de4c59cdf32f9a537f72858b1cf404381df9028badf737d10cb2200aeb35e5a5@4bd295bc-ae8b-441f-b05e-8e7b2c0b4a0b-bluemix.cloudant.com"
+            },
+            "syslog_drain_url": null,
+            "volume_mounts": [],
+            "label": "cloudantNoSQLDB",
+            "provider": null,
+            "plan": "Lite",
+            "name": "indowatson-cloudant",
+            "tags": [
+                "data_management",
+                "ibm_created",
+                "lite",
+                "ibm_dedicated_public"
+            ]
+        }
+    ]
+}
