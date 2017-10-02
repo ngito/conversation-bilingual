@@ -55,6 +55,16 @@ Use GitHub to clone the repository locally, or [download the .zip file](https://
 
 1. Select **Everything (Intents, Entities, and Dialog)** and then click **Import**. The car dashboard workspace is created.
 
+
+### Creating BRANCH table in Db2 Warehouse on Cloud
+
+1. Provision Db2 Warehouse on Cloud from Bluemix 
+
+1. Create table from data/branch.sql
+
+1. Import data from data/branch.csv
+
+
 ### Configuring the app environment
 
 1. Copy the `.env.example` file to a new `.env` file.
