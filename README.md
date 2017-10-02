@@ -51,7 +51,7 @@ Use GitHub to clone the repository locally, or [download the .zip file](https://
 
 1. Click **Import** in the Conversation service tool. Specify the location of the workspace JSON file in your local copy of the app project:
 
-    `<project_root>/training/car_workspace.json`
+    `<project_root>/training/bank-call-center.json`
 
 1. Select **Everything (Intents, Entities, and Dialog)** and then click **Import**. The car dashboard workspace is created.
 

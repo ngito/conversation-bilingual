@@ -164,9 +164,16 @@ console.log("\t\tlocation: " + location);
         console.log("\t\tsql = " + sql);
 
         var rows = con.querySync(sql);
+
+        if (rows.length == 0)
+            result = "No branch found at " + location;
+        else
+            result = "Found " + rows.length + " branches at " + location + '\n';
+
         for (var i = 0; i < rows.length; i++) {
             result += i+1 + '. ' + rows[i].ADDRESS + ' Phone: ' + rows[i].PHONE + '\n';
         }
+
         console.log(result);
         data.output.text = result;
         con.close(function() {
